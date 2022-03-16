@@ -65,13 +65,13 @@ class _AdminState extends State<Admin> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    // Future.delayed(const Duration(seconds: 60)).then((value) => showDialog(
-    //     context: context,
-    //     builder: (_) {
-    //       return const AlertDialog(
-    //         title: Text('Inactive for too long.'),
-    //       );
-    //     }));
+    Future.delayed(const Duration(seconds: 60)).then((value) => showDialog(
+        context: context,
+        builder: (_) {
+          return const AlertDialog(
+            title: Text('Inactive for too long.'),
+          );
+        }));
   }
 
   @override
@@ -108,6 +108,7 @@ class _AdminState extends State<Admin> with WidgetsBindingObserver {
           ],
           child: GetMaterialApp(
             locale: Get.deviceLocale,
+            theme: ThemeData(primaryColor: Colors.brown),
             debugShowCheckedModeBanner: false,
             builder: EasyLoading.init(),
             initialRoute: '/wrapper',

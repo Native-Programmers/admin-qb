@@ -1,12 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:qb_admin/admin/admin_screens/screens/all_orders.dart';
+import 'package:qb_admin/admin/screens/all_orders.dart';
 
-import 'add_banners.dart';
-import 'add_users.dart';
-import 'all_categories.dart';
-import 'all_luckydraw.dart';
+import '../screens/add_banners.dart';
+import '../screens/add_users.dart';
+import '../screens/all_categories.dart';
+import '../screens/all_luckydraw.dart';
 
 class Drawers extends StatefulWidget {
   const Drawers({Key? key}) : super(key: key);

@@ -63,6 +63,46 @@ class ProductsDataSource extends DataGridSource {
               ),
             ),
             DataGridCell<Widget>(
+              columnName: 'isRecommended',
+              value: Center(
+                child: ToggleSwitch(
+                    initialLabelIndex: (e.isPopular ? 0 : 1),
+                    minWidth: 50.0,
+                    cornerRadius: 25.0,
+                    activeBgColors: const [
+                      [Colors.cyan],
+                      [Colors.redAccent]
+                    ],
+                    activeFgColor: Colors.white,
+                    inactiveBgColor: Colors.grey,
+                    inactiveFgColor: Colors.white,
+                    totalSwitches: 2,
+                    labels: const ['YES', 'NO'],
+                    onToggle: (index) {
+                      EasyLoading.show();
+                      if (index == 1) {
+                        _firebaseFirestore
+                            .doc(e.uid)
+                            .update({'isPopular': false})
+                            .then(
+                              (value) =>
+                                  EasyLoading.showSuccess("Set To Not Popular"),
+                            )
+                            .onError((error, stackTrace) =>
+                                {EasyLoading.showError("Unable to update")});
+                      } else {
+                        _firebaseFirestore
+                            .doc(e.uid)
+                            .update({'isPopular': true})
+                            .then((value) =>
+                                EasyLoading.showSuccess("Set To Popular"))
+                            .onError((error, stackTrace) =>
+                                {EasyLoading.showError("Unable to update")});
+                      }
+                    }),
+              ),
+            ),
+            DataGridCell<Widget>(
               columnName: 'isActive',
               value: Center(
                 child: ToggleSwitch(
@@ -112,7 +152,6 @@ class ProductsDataSource extends DataGridSource {
                     var _name = TextEditingController();
                     var _discount = TextEditingController();
                     var _charges = TextEditingController();
-                    DateTime date;
                     return await showDialog(
                         context: context,
                         builder: (context) {
@@ -212,6 +251,8 @@ class ProductsDataSource extends DataGridSource {
                                         'isActive': true,
                                         'date':
                                             Timestamp.fromDate(DateTime.now()),
+                                        'winner': 'null',
+                                        'link': 'null',
                                       }).then((value) {
                                         EasyLoading.showSuccess(
                                                 'Data added successfully')

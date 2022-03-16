@@ -12,12 +12,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:qb_admin/admin/admin_screens/classes/all_products.dart';
+import 'package:qb_admin/admin/classes/all_products.dart';
+import 'package:qb_admin/admin/components/drawer.dart';
 import 'package:qb_admin/blocs/products/products_bloc.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
-import 'admin_screens/screens/drawer.dart';
 
 final List imageUrl = [];
 
@@ -164,6 +164,15 @@ class _dash_BoardState extends State<dash_Board> {
                               padding: const EdgeInsets.all(8.0),
                               child: const Text(
                                 'Recommended',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 20),
+                              ))),
+                      GridColumn(
+                          columnName: 'isPopular',
+                          label: Container(
+                              padding: const EdgeInsets.all(8.0),
+                              child: const Text(
+                                'Popular',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 20),
                               ))),

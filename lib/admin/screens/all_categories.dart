@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:qb_admin/admin/admin_screens/classes/all_categories.dart';
+import 'package:qb_admin/admin/classes/all_categories.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../../../blocs/category/category_bloc.dart';
@@ -199,6 +199,7 @@ class _CategoriesState extends State<Categories> {
                             .add({
                           'name': _name.text,
                           'imageUrl': _imageUrl,
+                          'active': true,
                         }).then((value) {
                           EasyLoading.dismiss();
                           EasyLoading.showSuccess('Product Added Successfully');
