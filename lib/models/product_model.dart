@@ -11,6 +11,7 @@ class Product extends Equatable {
   final bool isRecommended;
   final bool isPopular;
   final bool isActive;
+  final List wishList;
 
   const Product({
     required this.uid,
@@ -22,6 +23,7 @@ class Product extends Equatable {
     required this.isPopular,
     required this.isActive,
     required this.desc,
+    required this.wishList,
   });
 
   @override
@@ -30,15 +32,17 @@ class Product extends Equatable {
 
   static Product fromSnapshot(DocumentSnapshot snap) {
     Product product = Product(
-        uid: snap.id,
-        name: snap['name'],
-        category: snap['category'],
-        imageUrl: snap['imageUrl'],
-        price: snap['price'],
-        isRecommended: snap['isRecommended'],
-        isPopular: snap['isPopular'],
-        isActive: snap['isActive'],
-        desc: snap['desc']);
+      uid: snap.id,
+      name: snap['name'],
+      category: snap['category'],
+      imageUrl: snap['imageUrl'],
+      price: snap['price'],
+      isRecommended: snap['isRecommended'],
+      isPopular: snap['isPopular'],
+      isActive: snap['isActive'],
+      desc: snap['desc'],
+      wishList: snap['wishlist'],
+    );
     return product;
   }
 
