@@ -57,105 +57,133 @@ class _LuckyDrawsState extends State<LuckyDraws> {
           );
         }
         if (state is LuckyDrawLoaded) {
-          return SfDataGrid(
-            source:
-                LuckyDrawDataSource(luckyDraw: state.draw, context: context),
-            columnWidthMode: ColumnWidthMode.fill,
-            gridLinesVisibility: GridLinesVisibility.both,
-            sortingGestureType: SortingGestureType.tap,
-            allowTriStateSorting: true,
-            columns: <GridColumn>[
-              GridColumn(
-                columnName: 'name',
-                label: Container(
-                  padding: const EdgeInsets.all(16.0),
-                  child: const Text(
-                    'Name',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+          return SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: SizedBox(
+              width: 1600,
+              child: SfDataGrid(
+                source: LuckyDrawDataSource(
+                    luckyDraw: state.draw, context: context),
+                columnWidthMode: ColumnWidthMode.fill,
+                gridLinesVisibility: GridLinesVisibility.both,
+                sortingGestureType: SortingGestureType.tap,
+                allowTriStateSorting: true,
+                allowSorting: true,
+                allowMultiColumnSorting: true,
+                columns: <GridColumn>[
+                  GridColumn(
+                    columnName: 'name',
+                    label: Container(
+                      padding: const EdgeInsets.all(16.0),
+                      child: const Text(
+                        'Name',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              GridColumn(
-                columnName: 'product Id',
-                label: Container(
-                  padding: const EdgeInsets.all(16.0),
-                  child: const Text(
-                    'Product Id',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  GridColumn(
+                    columnName: 'product Id',
+                    label: Container(
+                      padding: const EdgeInsets.all(16.0),
+                      child: const Text(
+                        'Product Id',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              GridColumn(
-                columnName: 'Visit Product',
-                label: Container(
-                  padding: const EdgeInsets.all(16.0),
-                  child: const Text(
-                    'Visit Product',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  GridColumn(
+                    columnName: 'Visit Product',
+                    label: Container(
+                      padding: const EdgeInsets.all(16.0),
+                      child: const Text(
+                        'Visit Product',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              GridColumn(
-                columnName: 'price',
-                label: Container(
-                  padding: const EdgeInsets.all(8.0),
-                  child: const Text(
-                    'Price',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  GridColumn(
+                    columnName: 'price',
+                    label: Container(
+                      padding: const EdgeInsets.all(8.0),
+                      child: const Text(
+                        'Price',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              GridColumn(
-                columnName: 'Discount',
-                label: Container(
-                  padding: const EdgeInsets.all(8.0),
-                  child: const Text(
-                    'Discount (%)',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  GridColumn(
+                    columnName: 'Discount',
+                    label: Container(
+                      padding: const EdgeInsets.all(8.0),
+                      child: const Text(
+                        'Discount (%)',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              GridColumn(
-                columnName: 'date',
-                label: Container(
-                  padding: const EdgeInsets.all(8.0),
-                  child: const Text(
-                    'Remaining Time',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  GridColumn(
+                    columnName: 'date',
+                    label: Container(
+                      padding: const EdgeInsets.all(8.0),
+                      child: const Text(
+                        'Remaining Time',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              GridColumn(
-                columnName: 'isActive',
-                label: Container(
-                  padding: const EdgeInsets.all(8.0),
-                  child: const Text(
-                    'Availability Status',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  GridColumn(
+                    columnName: 'isActive',
+                    label: Container(
+                      padding: const EdgeInsets.all(8.0),
+                      child: const Text(
+                        'Availability Status',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              GridColumn(
-                columnName: 'Winner',
-                label: Container(
-                  padding: const EdgeInsets.all(8.0),
-                  child: const Text(
-                    'Select Winner',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  GridColumn(
+                    columnName: 'Winner',
+                    label: Container(
+                      padding: const EdgeInsets.all(8.0),
+                      child: const Text(
+                        'Select Winner',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              GridColumn(
-                columnName: 'End Draw',
-                label: Container(
-                  padding: const EdgeInsets.all(8.0),
-                  child: const Text(
-                    'End Lucky draw',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  GridColumn(
+                    columnName: 'End Draw',
+                    label: Container(
+                      padding: const EdgeInsets.all(8.0),
+                      child: const Text(
+                        'Finalize',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20),
+                      ),
+                    ),
                   ),
-                ),
+                  GridColumn(
+                    columnName: 'User Data',
+                    label: Container(
+                      padding: const EdgeInsets.all(8.0),
+                      child: const Text(
+                        'View Winner',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           );
         } else {
           return Center(

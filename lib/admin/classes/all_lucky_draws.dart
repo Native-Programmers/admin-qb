@@ -462,7 +462,7 @@ class LuckyDrawDataSource extends DataGridSource {
               columnName: 'view Winner',
               value: Center(
                   child: ElevatedButton(
-                child: Text('View Winner Data'),
+                child: Text('View Winner'),
                 onPressed: () {
                   if (e.winnerId != 'null') {
                     showDialog(
@@ -492,6 +492,7 @@ class LuckyDrawDataSource extends DataGridSource {
                                                     MainAxisAlignment.start,
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
+                                                mainAxisSize: MainAxisSize.min,
                                                 children: [
                                                   Text('Name : '),
                                                   Text('Mobile No :'),
@@ -506,6 +507,8 @@ class LuckyDrawDataSource extends DataGridSource {
                                                       MainAxisAlignment.start,
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
                                                   children: [
                                                     Text(data['name']),
                                                     Text(data['mobile']),
@@ -517,7 +520,9 @@ class LuckyDrawDataSource extends DataGridSource {
                                             ],
                                           ));
                                     }
-                                    if (!snapshot.hasData) {
+                                    if (!snapshot.hasData &&
+                                        snapshot.connectionState ==
+                                            ConnectionState.done) {
                                       return Center(
                                         child: Text('No such data exists!'),
                                       );

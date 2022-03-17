@@ -13,11 +13,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:qb_admin/admin/classes/all_products.dart';
+import 'package:qb_admin/admin/components/dash_cards.dart';
 import 'package:qb_admin/admin/components/drawer.dart';
+import 'package:qb_admin/blocs/category/category_bloc.dart';
+import 'package:qb_admin/blocs/luckydraw/luckydraw_bloc.dart';
+import 'package:qb_admin/blocs/orders/orders_bloc.dart';
 import 'package:qb_admin/blocs/products/products_bloc.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:toggle_switch/toggle_switch.dart';
-
 
 final List imageUrl = [];
 
@@ -51,58 +54,126 @@ class _dash_BoardState extends State<dash_Board> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            StreamBuilder(
-                stream:
-                    FirebaseFirestore.instance.collection("length").snapshots(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (!snapshot.hasData ||
-                      snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  return Container(
-                    margin:
-                        const EdgeInsets.symmetric(vertical: 25, horizontal: 5),
-                    width: MediaQuery.of(context).size.width,
-                    height: 100,
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      children: snapshot.data!.docs.map((data) {
-                        return Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            color: Colors.grey[100],
-                          ),
-                          margin: const EdgeInsets.only(right: 25),
-                          padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
-                          width: 200,
-                          height: 50,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              FittedBox(
-                                child: Text(
-                                  data['length'].toString(),
-                                  style: Theme.of(context).textTheme.headline4,
-                                ),
-                              ),
-                              FittedBox(
-                                child: Text(
-                                  data['name'],
-                                  style: Theme.of(context).textTheme.bodyText1,
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                  );
-                }),
+            const Divider(
+              color: Colors.transparent,
+              height: 15,
+            ),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  BlocBuilder<CategoryBloc, CategoryState>(
+                    builder: (context, state) {
+                      if (state is CategoryLoading) {
+                        return Center();
+                      }
+                      if (state is CategoryLoaded) {
+                        return DashCards(
+                            name: 'Categories',
+                            length: state.categories.length.toString());
+                      }
+                      return Center(
+                        child: Text(
+                            'Something Went Wrong! Please try again later!'),
+                      );
+                    },
+                  ),
+                  BlocBuilder<LuckyDrawBloc, LuckyDrawState>(
+                    builder: (context, state) {
+                      if (state is LuckyDrawLoading) {
+                        return Center();
+                      }
+                      if (state is LuckyDrawLoaded) {
+                        return DashCards(
+                            name: 'Total Lucky Draws',
+                            length: state.draw.length.toString());
+                      }
+                      return Center(
+                        child: Text(
+                            'Something Went Wrong! Please try again later!'),
+                      );
+                    },
+                  ),
+                  BlocBuilder<LuckyDrawBloc, LuckyDrawState>(
+                    builder: (context, state) {
+                      if (state is LuckyDrawLoading) {
+                        return Center();
+                      }
+                      if (state is LuckyDrawLoaded) {
+                        return DashCards(
+                            name: 'Completed Lucky Draws',
+                            length: state.draw
+                                .where((element) => element.isActive == false)
+                                .length
+                                .toString());
+                      }
+                      return Center(
+                        child: Text(
+                            'Something Went Wrong! Please try again later!'),
+                      );
+                    },
+                  ),
+                  BlocBuilder<OrdersBloc, OrdersState>(
+                    builder: (context, state) {
+                      if (state is OrdersLoading) {
+                        return Center();
+                      }
+                      if (state is OrdersLoaded) {
+                        return DashCards(
+                            name: 'Orders',
+                            length: state.orders.length.toString());
+                      }
+                      return Center(
+                        child: Text(
+                            'Something Went Wrong! Please try again later!'),
+                      );
+                    },
+                  ),
+                  BlocBuilder<ProductBloc, ProductState>(
+                    builder: (context, state) {
+                      if (state is ProductLoading) {
+                        return Center();
+                      }
+                      if (state is ProductLoaded) {
+                        return DashCards(
+                            name: 'Total Products',
+                            length: state.products.length.toString());
+                      }
+                      return Center(
+                        child: Text(
+                            'Something Went Wrong! Please try again later!'),
+                      );
+                    },
+                  ),
+                  BlocBuilder<ProductBloc, ProductState>(
+                    builder: (context, state) {
+                      if (state is ProductLoading) {
+                        return Center();
+                      }
+                      if (state is ProductLoaded) {
+                        return DashCards(
+                            name: 'Available Products',
+                            length: state.products
+                                .where(
+                                  (element) => element.isActive == true,
+                                )
+                                .length
+                                .toString());
+                      }
+                      return Center(
+                        child: Text(
+                            'Something Went Wrong! Please try again later!'),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+            const Divider(
+              color: Colors.transparent,
+              height: 15,
+            ),
             BlocBuilder<ProductBloc, ProductState>(
               builder: (context, state) {
                 if (state is ProductLoading) {
@@ -110,91 +181,104 @@ class _dash_BoardState extends State<dash_Board> {
                     child: CircularProgressIndicator(),
                   );
                 } else if (state is ProductLoaded) {
-                  return SfDataGrid(
-                    source: ProductsDataSource(
-                        productData: state.products, context: context),
-                    columnWidthMode: ColumnWidthMode.fill,
-                    gridLinesVisibility: GridLinesVisibility.both,
-                    sortingGestureType: SortingGestureType.tap,
-                    allowTriStateSorting: true,
-                    columns: <GridColumn>[
-                      GridColumn(
-                        columnName: 'name',
-                        label: Container(
-                          padding: const EdgeInsets.all(16.0),
-                          child: const Text(
-                            'Name',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 20),
+                  return SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: SizedBox(
+                      width: 1600,
+                      height: MediaQuery.of(context).size.height - 300,
+                      child: SfDataGrid(
+                        source: ProductsDataSource(
+                            productData: state.products, context: context),
+                        columnWidthMode: ColumnWidthMode.fill,
+                        gridLinesVisibility: GridLinesVisibility.both,
+                        sortingGestureType: SortingGestureType.tap,
+                        allowTriStateSorting: true,
+                        columns: <GridColumn>[
+                          GridColumn(
+                            columnName: 'name',
+                            label: Container(
+                              padding: const EdgeInsets.all(16.0),
+                              child: const Text(
+                                'Name',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 20),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                      GridColumn(
-                        columnName: 'category',
-                        label: Container(
-                          padding: const EdgeInsets.all(8.0),
-                          child: const Text(
-                            'Category',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 20),
+                          GridColumn(
+                            columnName: 'category',
+                            label: Container(
+                              padding: const EdgeInsets.all(8.0),
+                              child: const Text(
+                                'Category',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 20),
+                              ),
+                            ),
                           ),
-                        ),
+                          GridColumn(
+                              columnName: 'price',
+                              label: Container(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: const Text(
+                                    'Price (PKR)',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                  ))),
+                          GridColumn(
+                              columnName: 'desc',
+                              label: Container(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: const Text(
+                                    'Description',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                  ))),
+                          GridColumn(
+                              columnName: 'isRecommended',
+                              label: Container(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: const Text(
+                                    'Recommended',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                  ))),
+                          GridColumn(
+                              columnName: 'isPopular',
+                              label: Container(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: const Text(
+                                    'Popular',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                  ))),
+                          GridColumn(
+                              columnName: 'isActive',
+                              label: Container(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: const Text(
+                                    'Availability Status',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                  ))),
+                          GridColumn(
+                              columnName: 'Qismat draw',
+                              label: Container(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: const Text(
+                                    'Qismat Draw',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                  ))),
+                        ],
                       ),
-                      GridColumn(
-                          columnName: 'price',
-                          label: Container(
-                              padding: const EdgeInsets.all(8.0),
-                              child: const Text(
-                                'Price (PKR)',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 20),
-                              ))),
-                      GridColumn(
-                          columnName: 'desc',
-                          label: Container(
-                              padding: const EdgeInsets.all(8.0),
-                              child: const Text(
-                                'Description',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 20),
-                              ))),
-                      GridColumn(
-                          columnName: 'isRecommended',
-                          label: Container(
-                              padding: const EdgeInsets.all(8.0),
-                              child: const Text(
-                                'Recommended',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 20),
-                              ))),
-                      GridColumn(
-                          columnName: 'isPopular',
-                          label: Container(
-                              padding: const EdgeInsets.all(8.0),
-                              child: const Text(
-                                'Popular',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 20),
-                              ))),
-                      GridColumn(
-                          columnName: 'isActive',
-                          label: Container(
-                              padding: const EdgeInsets.all(8.0),
-                              child: const Text(
-                                'Availability Status',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 20),
-                              ))),
-                      GridColumn(
-                          columnName: 'Qismat draw',
-                          label: Container(
-                              padding: const EdgeInsets.all(8.0),
-                              child: const Text(
-                                'Qismat Draw',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 20),
-                              ))),
-                    ],
+                    ),
                   );
                 } else {
                   return Center(
